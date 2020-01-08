@@ -10,17 +10,13 @@ import { TodoDataService } from './todo-data.service'
 })
 export class AppComponent {
 
-  newTodo: Todo = new Todo();
 
   constructor(private todoService: TodoDataService) {
 
   }
 
-  addTodo() {
-      if(this.newTodo.title) {
-        this.todoService.addTodo(this.newTodo);
-        this.newTodo = new Todo();
-      }
+  addNewTodo(todo: Todo) {
+    this.todoService.addTodo(todo);
   }
 
   toggleTodoComplete(todo: Todo) {
