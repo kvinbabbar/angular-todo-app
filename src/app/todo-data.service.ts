@@ -1,54 +1,37 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiService } from './api.service';
 import { Todo } from './todo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoDataService {
-  lastId: number = 0;
 
-  todos: Todo[] = [];
+  constructor(private api: ApiService) { }
 
-  constructor() { }
-
-  addTodo(todo: Todo): TodoDataService {
-    if(!todo.id) {
-      todo.id = ++this.lastId;
-    }
-    this.todos.push(todo);
-
-    return this;
+  addTodo(todo: Todo): Observable<Todo> {
+    return this.api.addTodo(todo);
   }
 
-  deleteTodoById(id: number): TodoDataService {
-    this.todos = this.todos
-      .filter(todo => todo.id !== id);
-    return this;
+  deleteTodoById(todo: Todo): Observable<Todo> {
+    return this.api.deleteTodoById(todo);
   }
 
-  updateTodoById(id: number, values: Object = {}): Todo {
-    let todo = this.getTodoById(id);
-
-    if(!todo) {
-      return null;
-    }
-    Object.assign(todo,values);
-    return todo;
+  updateTodoById(todo: Todo): Observable<Todo> {
+    return this.api.updateTodoById(todo);
   }
 
-  getAllTodos(): Todo[] {
-    return this.todos;
+  getAllTodos(): Observable<Todo[]> {
+    return this.api.getAllTodos();
   }
 
-  getTodoById(id: number): Todo {
-    return this.todos.filter(todo => todo.id === id).pop();
+  getTodoById(id: number): Observable<Todo> {
+    return this.api.getTodoById(id);
   }  
 
-  toggleTodoComplete(todo: Todo) {
-    let updateTodo = this.updateTodoById(todo.id, {
-      complete: !todo.complete
-    });
-
-    return updateTodo;
+  toggleTodoComplete(todo: Todo): Observable<Todo> {
+    todo.complete = !todo.complete;
+    return this.api.updateTodoById(todo);
   }
 }
