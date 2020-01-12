@@ -23,16 +23,14 @@ export class ApiService {
   getAllTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>(this.apiUrl)
       .pipe(
-        catchError(err => throwError(err))
+        catchError(this.errorHandler<Todo[]>("getAllTodos", []))
       )
   }
 
   addTodo(todo: Todo): Observable<Todo> {
     return this.http.post<Todo>(this.apiUrl, todo, this.httpOptions)
       .pipe(
-        catchError(err => {
-          return throwError(err)
-        })
+        catchError(this.errorHandler<Todo>("addTodo"))
       )
   }
 
@@ -40,9 +38,7 @@ export class ApiService {
     const url = `${this.apiUrl}/${todo.id}`;
     return this.http.put(url, todo, this.httpOptions)
       .pipe(
-        catchError(err => {
-          return throwError(err)
-        })
+        catchError(this.errorHandler<Todo>("updateTodoById"))
       )
   }
 
@@ -51,9 +47,7 @@ export class ApiService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<Todo>(url, this.httpOptions)
       .pipe(
-        catchError(err => {
-          return throwError(err)
-        })
+        catchError(this.errorHandler<Todo>("deleteTodoById"))
       )
   }
 
@@ -61,10 +55,14 @@ export class ApiService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Todo>(url)
       .pipe(
-        catchError(err => {
-          return throwError(err)
-        })
+        catchError(this.errorHandler<Todo>("getTodoById"))
       )
   }
 
+  private errorHandler<T>(operation = "Operation", result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    }
+  }
 }

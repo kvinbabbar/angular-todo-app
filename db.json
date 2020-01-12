@@ -1,9 +1,19 @@
 {
   "todos": [
     {
-      "complete": false,
-      "title": "kkk",
+      "complete": true,
+      "title": "Eat Food",
       "id": 1
+    },
+    {
+      "complete": true,
+      "title": "Write Code",
+      "id": 2
+    },
+    {
+      "complete": false,
+      "title": "Sleep",
+      "id": 3
     }
   ]
 }
