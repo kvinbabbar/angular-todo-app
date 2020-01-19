@@ -2,4 +2,6 @@
     <app-todo-header (add)="addNewTodo($event)"></app-todo-header>
     <app-todo-list [todos]="todos" (removeTodo)="removeTodo($event)" (toggleComplete)="toggleTodoComplete($event)"></app-todo-list>
     <app-todo-footer [todos]="todos"></app-todo-footer>
-  </section>
+</section>
+<!-- Sign out button -->
+<button (click)="doSignOut()">Sign out</button>
